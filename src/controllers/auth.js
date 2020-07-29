@@ -4,21 +4,22 @@ const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
+const saltRonds = 10;
+
 router.get("/sign-in", (req, res) => {
     return res.json("sign-in!");
 });
 
 router.get("/sign-up", async (req, res) => {
-    
-    const saltRonds = 10;
+    const { email, password } = req.body;
 
-    const email = "erickd.moraes@gmail.com";
-    const password = "123456";
+    const account = await Account.findOne({ where: { email } });
+    if (account) return res.json("Account already exists");
 
     const hash = bcrypt.hashSync(password, saltRonds);
-    const result = await Account.create({email, password: hash});
+    const newAccount = await Account.create({email, password: hash});
     
-    return res.json(result);
+    return res.json(newAccount);
 });
 
 module.exports = router;
