@@ -5,7 +5,7 @@ const router = express.Router();
 
 // get all links
 router.get("/", async (req, res) => {
-    const accountId = 1; // req.id
+    const { accountId } = req;
     const link = await Link.findAll({ where: { accountId } });
 
     return res.jsonOK(link);
@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
 
 // get single link
 router.get("/:id", async (req, res) => {
-    const accountId = 1; // req.id
+    const { accountId } = req;
     const { id } = req.params;
 
     const link = await Link.findOne({ where: { id, accountId } });
@@ -24,8 +24,8 @@ router.get("/:id", async (req, res) => {
 
 // create a link
 router.post("/", async (req, res) => {
-    const accountId = 1; // req.id
-    const { label, url, isSocial } = req.body;
+    const { accountId, body } = req;
+    const { label, url, isSocial } = body;
 
     const image = "https://google.com/image.jpg"
 
@@ -36,9 +36,8 @@ router.post("/", async (req, res) => {
 
 // update a link
 router.put("/:id", async (req, res) => {
-    const accountId = 1; // req.id
+    const { accountId, body } = req;
     const { id } = req.params;
-    const { body } = req;
     const fields = ["label", "url", "isSocial"];
 
     const link = await Link.findOne({ where: { id, accountId } });
@@ -56,7 +55,7 @@ router.put("/:id", async (req, res) => {
 
 // delete a link
 router.delete("/:id", async (req, res) => {
-    const accountId = 1; // req.id
+    const { accountId } = req;
     const { id } = req.params;
 
     const link = await Link.findOne({ where: { id, accountId } });
