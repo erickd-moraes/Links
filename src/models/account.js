@@ -10,6 +10,12 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
+    // criar relacionamento Account - Link (Tem muitos...)
+    Account.associate = (models) => {
+        Account.hasMany(models.Link, { foreignKey: "accountId" });
+    };
+
+    // esconder o campo senha
     Account.prototype.toJSON = function () {
         const values = { ...this.get() };
         delete values.password;
